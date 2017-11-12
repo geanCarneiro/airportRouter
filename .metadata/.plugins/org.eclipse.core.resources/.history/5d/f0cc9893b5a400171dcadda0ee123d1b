@@ -1,0 +1,69 @@
+package main;
+
+public class Pessoa implements Comparable<Pessoa>{
+
+	private String agencia;
+	private String nConta;
+	private String nome;
+	private String cpf;
+	
+	public Pessoa(){
+		this.agencia = "";
+		this.nConta = "";
+		this.nome = "";
+		this.cpf = "";
+	}
+	
+	public Pessoa(String inAgencia, String inNConta, String inNome, String inCpf){
+		this.agencia = inAgencia;
+		this.nConta = inNConta;
+		this.nome = inNome;
+		this.cpf = inCpf;
+	}
+	
+	public String getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(String agencia) {
+		this.agencia = agencia;
+	}
+
+	public String getnConta() {
+		return nConta;
+	}
+
+	public void setnConta(String nConta) {
+		this.nConta = nConta;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	@Override
+	public int compareTo(Pessoa other) {
+		
+		int out = this.nome.compareToIgnoreCase(other.nome);
+		
+		if(out == 0)
+			out = this.cpf.compareTo(other.cpf);
+		
+		return out;
+	}
+
+	
+	
+}

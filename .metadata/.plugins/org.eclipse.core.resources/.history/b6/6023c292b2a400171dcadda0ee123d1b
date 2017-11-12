@@ -1,0 +1,15 @@
+package main;
+
+public class Pessoa implements Comparable<Pessoa>{
+
+	@Override
+	public int compareTo(Pessoa o) {
+		
+		if()
+		
+		return 0;
+	}
+
+	
+	
+}

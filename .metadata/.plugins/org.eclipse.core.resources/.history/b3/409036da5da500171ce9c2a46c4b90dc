@@ -1,0 +1,18 @@
+package main;
+
+import java.io.File;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		File pastaInput = new File(ClassLoader.getSystemResource("input").getPath()).getParentFile();
+		File pastaOutput = new File(ClassLoader.getSystemResource("output").getPath());
+		
+		System.out.println(pastaInput.getPath() + " - " + pastaInput.isDirectory());
+		System.out.println(pastaOutput.getPath() + " - " + pastaInput.exists());
+		
+		
+	}
+
+}

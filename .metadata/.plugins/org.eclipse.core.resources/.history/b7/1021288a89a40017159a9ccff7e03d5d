@@ -1,0 +1,13 @@
+package main;
+
+import java.util.Scanner;
+
+public class FileManager {
+	
+	private static Scanner scan;
+	
+	public static String getLinhas(){
+		
+	}
+	
+}

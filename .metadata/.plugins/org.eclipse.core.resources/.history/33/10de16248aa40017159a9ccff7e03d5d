@@ -1,0 +1,6 @@
+package main.listaEncadeada;
+
+public class Item<T> {
+	
+	
+}

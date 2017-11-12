@@ -1,0 +1,9 @@
+package main;
+
+public class Manipulador {
+	
+	public static void QuickSort(Pessoas[] vet){
+		
+	}
+	
+}

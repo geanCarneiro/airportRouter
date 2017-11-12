@@ -1,0 +1,13 @@
+package main;
+
+public class Manipulador {
+	
+	public static Pessoa[] gerarPessoasDeLinhas(String[] linhas){
+		
+	}
+	
+	public static void QuickSort(Pessoa[] vet){
+		
+	}
+	
+}

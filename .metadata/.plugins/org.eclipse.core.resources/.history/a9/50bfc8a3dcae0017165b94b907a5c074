@@ -1,0 +1,87 @@
+package main;
+
+public class Manipulador {
+	
+	private static long temp = -1;
+	
+	public static Cliente[] gerarPessoasDeLinhas(String[] linhas){
+		Cliente[] out = new Cliente[linhas.length];
+		
+		for(int i = 0; i < out.length; i++)
+			out[i] = new Cliente(linhas[i]);
+		
+		return out;
+	}
+	
+	public static void QuickSort(Cliente[] vet){
+		QuickSort (vet, 0, vet.length-1);
+	}
+	
+	private static void QuickSort(Cliente[] vet, int esq, int dir) {
+		int i = esq;
+		int j = dir;
+		Cliente pivor = vet[(int)(i+j/2)];
+		
+		while(i <= j) {
+			System.out.println(vet[i].getNome());
+			System.out.println(pivor.getNome());
+			System.out.println();
+			
+			while(vet[i].compareTo(pivor) < 0) 
+				i++;
+			
+			while(vet[j].compareTo(pivor) > 0)
+				j--;
+			
+			if(i <= j) {
+				Cliente temp = vet[i];
+				vet[i] = vet[j];
+				vet[j] = temp;
+				i++;
+				j--;
+			}
+		}
+		
+		if(esq < j)
+			QuickSort(vet, esq, j);
+		if(i < dir)
+			QuickSort(vet, i, dir);
+	}
+	
+	public static void QuickSortComInsercao(Cliente[] vet) {
+		
+	}
+	
+	public static void insercaoDireta(Cliente[] vet) {
+		insercaoDireta(vet, 0, vet.length-1);
+	}
+	
+	private static void insercaoDireta(Cliente[] vet, int esq, int dir) {
+		
+	}
+	
+	public static int pesquisaBinaria() {
+		return -1;
+	}
+	
+	public static boolean iniciarContador() {
+		if (temp != -1)
+			return false;
+		
+		temp = System.nanoTime();
+		
+		return true;
+	}
+	
+	public static long pararContador() {
+		if(temp == -1)
+			return -1;
+		
+		long out = System.nanoTime() - temp;
+		temp = -1;
+		
+		return out;
+		
+	}
+	
+}
