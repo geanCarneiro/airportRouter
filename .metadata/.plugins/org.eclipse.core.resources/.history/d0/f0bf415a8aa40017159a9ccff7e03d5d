@@ -1,8 +1,0 @@
-package main.listaEncadeada;
-
-public class No<T> {
-	
-	private T info;
-	private T prox;
-	
-}

@@ -1,8 +1,0 @@
-package main.listaEncadeada;
-
-public class No {
-	
-	private No raiz;
-	private int tam;
-	
-}
