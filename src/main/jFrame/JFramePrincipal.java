@@ -10,8 +10,11 @@ import java.awt.Container;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -117,7 +120,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabelCodVoo.setText("Codigo do Voo: ");
 
-        jLabelCodAviao.setText("Codigo do Avi√£o: ");
+        jLabelCodAviao.setText("Codigo do Avi„o: ");
 
         jLabelAeroPartida.setText("Aeroporto de Partida: ");
 
@@ -280,12 +283,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         
         JFileChooser jfc = new JFileChooser();
         
-        jfc.setFileFilter(new FileNameExtensionFilter("Arquivos *.txt", "txt"));
+        jfc.setFileFilter(new FileNameExtensionFilter("Arquivos *.json", "json"));
         
         if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
             File file = jfc.getSelectedFile();
             
-            plano = Manipulador.planoDeVooFromLinhas(FileManager.getLinesFromFile(file));
+            plano = Manipulador.planoDeVooFromVooInList(FileManager.getVooInFromFile(file));
             
             refresh();
         }
@@ -336,7 +339,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }
     
     private void sair(){
-        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "ATEN√á√ÉO", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "ATEN«√O", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         
         if(sair == JOptionPane.YES_OPTION){
             System.exit(0);

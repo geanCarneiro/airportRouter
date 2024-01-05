@@ -1,9 +1,12 @@
 package main;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public enum DiasSemana {
 	
 	Segunda,
-	Terça,
+	Terca,
 	Quarta,
 	Quinta,
 	Sexta,
@@ -11,19 +14,18 @@ public enum DiasSemana {
 	Domingo;
         
         public DiasSemana next(){
+        	
             DiasSemana[] values = DiasSemana.values();
             
-            return values[(this.ordinal()+1)%values.length];
+            return values[(this.ordinal()+1) % values.length];
         }
         
         public static String[] valuesAsString(){
-            DiasSemana[] values = DiasSemana.values();
-            String[] out = new String[values.length];
-            for(int i = 0; i < out.length; i++){
-                out[i] = values[i].name();
-            }
-            
-            return out;
+        	
+        	return Arrays.asList(DiasSemana.values())
+        		.stream().map(dia -> dia.name())
+        		.collect(Collectors.toList()).toArray(new String[0]);
+        	
         }
 	
 }

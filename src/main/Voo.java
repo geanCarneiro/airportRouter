@@ -1,5 +1,6 @@
 package main;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,17 +20,17 @@ public class Voo{
 	private List<DiasSemana> diasDisponives = new ArrayList<>();
 	private String codVoo;
 	private String codAviao;
-	private int[] horaDeSaida = new int[2];
+	private LocalTime horaDeSaida = null;
 	private Aeroporto aeroportoSaida;
-	private int[] horaDeChegada = new int[2];
+	private LocalTime horaDeChegada = null;
 	private Aeroporto aeroportoChegada;
 
 	public Voo() {
 		
 	}
 
-	public Voo(List<DiasSemana> diasDisponives, String codVoo, String codAviao, int[] horaDeSaida,
-			Aeroporto aeroportoSaida, int[] horaDeChegada, Aeroporto aeroportoChegada) {
+	public Voo(List<DiasSemana> diasDisponives, String codVoo, String codAviao, LocalTime horaDeSaida,
+			Aeroporto aeroportoSaida, LocalTime horaDeChegada, Aeroporto aeroportoChegada) {
 		this();
 		this.diasDisponives = diasDisponives;
 		this.codVoo = codVoo;
@@ -53,19 +54,22 @@ public class Voo{
 		
 		this.codVoo = codVoo;
 		this.codAviao = codAviao;
-		this.horaDeSaida = new int[]{
-				Integer.valueOf(horaDeSaida.substring(0, 2)),
+		this.horaDeSaida = LocalTime.of(
+				Integer.valueOf(horaDeSaida.substring(0, 2)), 
 				Integer.valueOf(horaDeSaida.substring(2))
-		};
+						);
+		
 		this.aeroportoSaida = aeroportoSaida;
-		this.horaDeChegada = new int[] {
+		this.horaDeChegada = LocalTime.of(
 				Integer.valueOf(horaDeChegada.substring(0, 2)),
 				Integer.valueOf(horaDeChegada.substring(2))
-		};
+				);
 		this.aeroportoChegada = aeroportoChegada;
 	}
 	
         public String[] getInfos(){
+        	
+        	
             String[] out = new String[7];
             
             out[0] = "";
@@ -77,38 +81,34 @@ public class Voo{
             });
             out[1] = codVoo;
             out[2] = codAviao;
-            out[3] = String.format("%02d:%02d", horaDeSaida[0], horaDeSaida[1]);
+            out[3] = horaDeSaida.format(Main.timeFormatter);
             out[4] = aeroportoSaida.toString();
-            out[5] = String.format("%02d:%02d", horaDeChegada[0], horaDeChegada[1]);
+            out[5] = horaDeChegada.format(Main.timeFormatter);
             out[6] = aeroportoChegada.toString();
             
             return out;
         }
         
-	public int getTempoDeVoo() {
+	public LocalTime getTempoDeVoo() {
 		
-            if(this.horaDeChegada[0] > this.horaDeSaida[0]){
-                int horaSaida = Manipulador.getTimeInMin(this.horaDeSaida);
-                int horaChegada = Manipulador.getTimeInMin(this.horaDeChegada);
-                
-                return horaChegada - horaSaida;
+            if(this.horaDeChegada.isAfter(horaDeSaida)){
+                return horaDeChegada
+                		.minusHours(horaDeSaida.getHour())
+                		.minusMinutes(horaDeSaida.getMinute());
             } else {
-                return 24*60 - Manipulador.getTimeInMin(subTempo(horaDeSaida, horaDeChegada));
+                return horaDeSaida
+                		.plusHours(24)
+                		.minusHours(horaDeChegada.getHour())
+                		.minusMinutes(horaDeChegada.getMinute());
             }
 	}
-       
-	public int[] subTempo(int[] t1, int[] t2) {
+	
+	public int getTempoDeVooInMinutes() {
 		
-            int difHora = t1[0] - t2[0];
-            int difMin = t1[1] - t2[1];
-            
-            if(difMin < 0){
-                difHora--;
-                difMin += 60;
-            }
-            
-            return new int[]{difHora, difMin};
-	}
+        LocalTime tempoDeVoo = getTempoDeVoo();
+        
+        return tempoDeVoo.getHour()*60 + tempoDeVoo.getMinute();
+}
 
 
     public List<DiasSemana> getDiasDisponives() {
@@ -135,11 +135,11 @@ public class Voo{
             this.codAviao = codAviao;
     }
 
-    public int[] getHoraDeSaida() {
+    public LocalTime getHoraDeSaida() {
             return horaDeSaida;
     }
 
-    public void setHoraDeSaida(int[] horaDeSaida) {
+    public void setHoraDeSaida(LocalTime horaDeSaida) {
             this.horaDeSaida = horaDeSaida;
     }
 
@@ -151,11 +151,11 @@ public class Voo{
             this.aeroportoSaida = aeroportoSaida;
     }
 
-    public int[] getHoraDeChegada() {
+    public LocalTime getHoraDeChegada() {
             return horaDeChegada;
     }
 
-    public void setHoraDeChegada(int[] horaDeChegada) {
+    public void setHoraDeChegada(LocalTime horaDeChegada) {
             this.horaDeChegada = horaDeChegada;
     }
 
@@ -176,8 +176,8 @@ public class Voo{
             result = prime * result + ((codAviao == null) ? 0 : codAviao.hashCode());
             result = prime * result + ((codVoo == null) ? 0 : codVoo.hashCode());
             result = prime * result + ((diasDisponives == null) ? 0 : diasDisponives.hashCode());
-            result = prime * result + Arrays.hashCode(horaDeChegada);
-            result = prime * result + Arrays.hashCode(horaDeSaida);
+            result = prime * result + ((horaDeChegada == null) ? 0 : horaDeChegada.hashCode());
+            result = prime * result + ((horaDeSaida == null) ? 0 : horaDeSaida.hashCode());
             return result;
     }
 
@@ -215,20 +215,20 @@ public class Voo{
                             return false;
             } else if (!diasDisponives.equals(other.diasDisponives))
                     return false;
-            if (!Arrays.equals(horaDeChegada, other.horaDeChegada))
+            if (!horaDeChegada.equals(other.horaDeChegada))
                     return false;
-            return Arrays.equals(horaDeSaida, other.horaDeSaida);
+            return horaDeSaida.equals(other.horaDeSaida);
     }
 
     @Override
     public String toString() {
         return String.format("(%s) %02d:%02d em %s => %02d:%02d em %s",
                                 codVoo,
-                                horaDeSaida[0],
-                                horaDeSaida[1],
+                                horaDeSaida.getHour(),
+                                horaDeSaida.getMinute(),
                                 aeroportoSaida,
-                                horaDeChegada[0],
-                                horaDeChegada[1],
+                                horaDeChegada.getHour(),
+                                horaDeChegada.getMinute(),
                                 aeroportoChegada);
     }
     

@@ -1,19 +1,26 @@
 package main;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
+
 import main.jFrame.JFramePrincipal;
 
 public class Main {
     
-    private static final File ARQ_DICIO = new File(ClassLoader.getSystemResource("").getPath(), "icaosDicio.txt");
-    public static final HashMap<String, String> ICAO_DICIO = new HashMap<>();
+    private static final File ARQ_DICIO = new File(ClassLoader.getSystemResource("").getPath(), "icaosDicio.properties");
+    public static final Properties ICAO_DICIO = new Properties();
+    public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
 	public static void main(String[] args) {
             
             if(ARQ_DICIO.exists())
-                popularDicionario(FileManager.getLinesFromFile(ARQ_DICIO));
+            	carregarDicionario(ARQ_DICIO);
             else
                 System.err.println("Dicionario inexistente");
             
@@ -21,15 +28,22 @@ public class Main {
 
 	}
 
-    private static void popularDicionario(List<String> lines) {
+    private static void carregarDicionario(File dicio) {
         
-        ICAO_DICIO.clear();
+        try {
+        	
+        	FileReader reader = new FileReader(dicio);
+        	ICAO_DICIO.load(reader);
+			reader.close();
+			
+        	
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+        	System.err.println("Erro ao carregar ou salvar dicionario");
+			e.printStackTrace();
+		}
+       
         
-        lines.forEach(l -> {
-            String[] infos = l.split(";");
-            
-            ICAO_DICIO.put(infos[0], infos[1]);
-        });
         
     }
 

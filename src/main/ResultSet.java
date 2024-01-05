@@ -5,9 +5,11 @@
  */
 package main;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -24,6 +26,12 @@ public class ResultSet {
         limparFiltro();
     }
     
+    public static String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+    
     public void filtraCodVoo(String cod){
         
         if(cod == null || cod.isEmpty())
@@ -32,7 +40,7 @@ public class ResultSet {
         Iterator<Voo> it = this.list.iterator();
         while(it.hasNext()){
             Voo voo = it.next();
-            if(!voo.getCodVoo().toUpperCase().contains(cod.toUpperCase())){
+            if(!deAccent(voo.getCodVoo()).toUpperCase().contains(deAccent(cod).toUpperCase())){
                 it.remove();
             }
         }
@@ -47,7 +55,7 @@ public class ResultSet {
         Iterator<Voo> it = this.list.iterator();
         while(it.hasNext()){
             Voo voo = it.next();
-            if(!voo.getCodAviao().toUpperCase().contains(cod.toUpperCase())){
+            if(!deAccent(voo.getCodAviao()).toUpperCase().contains(deAccent(cod).toUpperCase())){
                 it.remove();
             }
         }
@@ -62,8 +70,8 @@ public class ResultSet {
         Iterator<Voo> it = this.list.iterator();
         while(it.hasNext()){
             Voo voo = it.next();
-            if((!voo.getAeroportoSaida().getIcao().toUpperCase().contains(name.toUpperCase()))
-            && (!voo.getAeroportoSaida().getName().toUpperCase().contains(name.toUpperCase()))){
+            if((!deAccent(voo.getAeroportoSaida().getIcao()).toUpperCase().contains(deAccent(name).toUpperCase()))
+            && (!deAccent(voo.getAeroportoSaida().getName()).toUpperCase().contains(deAccent(name).toUpperCase()))){
                 it.remove();
             }
         }
@@ -78,8 +86,8 @@ public class ResultSet {
         Iterator<Voo> it = this.list.iterator();
         while(it.hasNext()){
             Voo voo = it.next();
-            if((!voo.getAeroportoChegada().getIcao().toUpperCase().contains(name.toUpperCase()))
-            && (!voo.getAeroportoChegada().getName().toUpperCase().contains(name.toUpperCase()))){
+            if((!deAccent(voo.getAeroportoChegada().getIcao()).toUpperCase().contains(deAccent(name).toUpperCase()))
+            && (!deAccent(voo.getAeroportoChegada().getName()).toUpperCase().contains(deAccent(name).toUpperCase()))){
                 it.remove();
             }
         }

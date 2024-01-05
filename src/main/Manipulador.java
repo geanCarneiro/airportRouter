@@ -17,13 +17,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Manipulador {
     
-    public static PlanoDeVoo planoDeVooFromLinhas(List<String> linhas){
-        PlanoDeVoo out = new PlanoDeVoo();
+    public static PlanoDeVoo planoDeVooFromVooInList(List<VooIn> vooList) {
+    	PlanoDeVoo out = new PlanoDeVoo();
         
-        for(String reg: linhas) {
-            String[] infos = reg.split(";");
+        for(VooIn reg: vooList) {
             
-            out.addVoo(infos[0], infos[1], infos[2], infos[3], infos[4]);
+            out.addVoo(reg.getDiasDisponives(),
+            		reg.getCodVoo(),
+            		reg.getCodAviao(),
+            		reg.getHoraDeSaida_aeroportoSaida(),
+            		reg.getHoraDeChegada_aeroportoChegada()
+            );
+            
         }
         
         return out;
@@ -35,10 +40,6 @@ public class Manipulador {
     
     public static int[] getMinInTime(int time){
         return new int[]{time/60, time%60};
-    }
-    
-    public static void EspalharDocumentListenner(DocumentListener docEvent, Container container){
-        
     }
     
     public static DefaultTableModel tableModelFromPlano(PlanoDeVoo plano){

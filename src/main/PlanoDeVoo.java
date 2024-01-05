@@ -49,11 +49,11 @@ public class PlanoDeVoo {
 
                 if (!vizinho.isVisitado()) {
 
-                    int distanciaPossivel = atual.getDistancia() + voo.getTempoDeVoo();
+                    int distanciaPossivel = atual.getDistancia() + voo.getTempoDeVooInMinutes();
                     Voo vooChegada = atual.getVia();
 
                     if (vizinho.getDistancia() > distanciaPossivel
-                            && (vooChegada == null || this.isMaior(voo.getHoraDeSaida(), vooChegada.getHoraDeChegada()))) {
+                            && (vooChegada == null || voo.getHoraDeSaida().isAfter(vooChegada.getHoraDeChegada()) )) {
 
                             vizinho.setDistancia(distanciaPossivel);
                             vizinho.setVia(voo);
@@ -114,11 +114,11 @@ public class PlanoDeVoo {
             String horaDeChegada_aeroportoChegada) {
 
         String icaoSaida = horaDeSaida_aeroportoSaida.substring(0, 4);
-        String nomeSaida = Main.ICAO_DICIO.containsKey(icaoSaida) ? Main.ICAO_DICIO.get(icaoSaida) : "";
+        String nomeSaida = Main.ICAO_DICIO.getProperty(icaoSaida, "");
         String horaDeSaida = horaDeSaida_aeroportoSaida.substring(4);
 
         String icaoChegada = horaDeChegada_aeroportoChegada.substring(0, 4);
-        String nomeChegada = Main.ICAO_DICIO.containsKey(icaoChegada) ? Main.ICAO_DICIO.get(icaoChegada) : "";
+        String nomeChegada = Main.ICAO_DICIO.getProperty(icaoChegada, "");
         String horaDeChegada = horaDeChegada_aeroportoChegada.substring(4);
 
         addVoo(new Voo(diasDisponives, codVoo, codAviao, horaDeSaida, addAeroporto(new Aeroporto(icaoSaida, nomeSaida)), horaDeChegada, addAeroporto(new Aeroporto(icaoChegada, nomeChegada))));
